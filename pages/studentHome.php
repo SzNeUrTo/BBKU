@@ -39,7 +39,16 @@
 </head>
 
 <body>
-
+<?php
+session_start();
+if(!isset($_SESSION['username'])) {
+		echo "Please Log In .....................";
+		//echo "<meta http-equiv='refresh' content='0;url=login.html'>";
+		header("refresh: 1; url=login.html");
+}
+else {
+		$username = $_SESSION['username'];
+?>
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -95,7 +104,8 @@
                         <!-- end search -->
 
                         <li>
-                            <a href="profile.html"><i class="fa fa-user fa-fw"></i> b561050xxxx</a>
+                            <!--<a href="profile.html"><i class="fa fa-user fa-fw"></i> b561050xxxx</a>-->
+														<a href="profile.html"><i class="fa fa-user fa-fw"></i><?php echo $username; ?></a>
                         </li>
 
                         <li>
@@ -114,6 +124,9 @@
                                 </li>
                                 <li>
                                     <a href="./studentHistory.php?search=return"><i class="fa fa-reply fa-fw"></i> Returning</a>
+                                </li>
+                                <li>
+                                    <a href="./studentHistory.php?search=lost"><i class="fa fa-remove fa-fw"></i> Loss</a>
                                 </li>
                                 <li>
                                     <a href="./studentHistory.php?search=all"><i class="fa fa-exchange fa-fw"></i> All</a>
@@ -216,7 +229,9 @@
         });
     });
     </script>
-
+<?php
+}
+?>
 
 </body>
 

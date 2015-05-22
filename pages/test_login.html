@@ -60,8 +60,7 @@
 					});
 					var data = o;
 					console.log(data);
-					var posting = $.post('studentCheckLogin.php', data);
-					//var posting = $.post('test2_login.php', data);
+					var posting = $.post('checkLogin.php', data);
 					console.log('before post');
 					posting.done(function(data) {
 						console.log('=========');
@@ -69,7 +68,7 @@
 						console.log('=========');
 						if (data == 'success') {
 							console.log('success post');
-							window.location.href = './studentHome.php';
+							window.location.href = './test_home.php';
 						}
 						else {
 							console.log('fail post');

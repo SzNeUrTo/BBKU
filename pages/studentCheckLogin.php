@@ -1,4 +1,5 @@
 <?php
+session_start();
 $host = 'localhost';
 $username = 'root';
 $password = 'toor';
@@ -16,14 +17,15 @@ try {
 					echo 'do not NULL';
      			}
 				else {
-					$sql = "SELECT COUNT(User) AS c FROM StdAccount WHERE User='$username' AND Pass = '$password'";
+					$sql = "SELECT StdID,COUNT(User) AS c FROM StdAccount WHERE User='$username' AND Pass = '$password'";
 					$qry = $conn -> query($sql);
-					if ($qry -> fetch()['c'] != 0) {
-						$limitTime = time()+60*60;
+					$result = $qry -> fetch();
+					$isCorrect = $result['c'];
+					$studentID = $result['StdID'];
+					if ($isCorrect != 0) {
 						echo "success";
-						setcookie("mycookie", "$username", $limitTime);
-						//$_SESSION['user'] 
-						//setcookie("memberlogin", $username, $password, $limitTime);
+						$_SESSION['username'] = $username;
+						$_SESSION['studentID'] = $studentID;
 					}
 					else {
 						echo 'error';

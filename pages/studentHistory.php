@@ -7,15 +7,40 @@ $port = 80;
 
 
 try {
+    $studentID = '0002';
+
+
+    
+	if ($_SERVER["REQUEST_METHOD"] == "GET") {
+		$search = $_GET["search"];
+		echo $search;
+		//echo 'eiei';
+        if ($search == 'borrow') {
+			echo 'eiei';
+            $search = " AND Operation = 'Borrow'";
+        }
+        else if ($search == 'return') {
+            $search = " AND Operation = 'return'";
+        }
+        else if ($search == 'loss') {
+            $search = " AND Operation = 'lost'";
+        }
+      	else {
+            $search = ""; 
+        }
+		//$search = '';
+    } 
+
     $conn = new PDO("mysql:host=$host;dbname=$dbname".";port=$port", $username, $password);
 
     $sql = "SELECT *
-            FROM History";
-            //WHERE StdID = '$studentID'";
+            FROM History
+			WHERE StdID = '$studentID'$search";
+			//AND Operation='Borrow'";
 
     $qry = $conn -> query($sql);
 } catch (PDOException $error) {
-    die("Could not connect to the database $dbname :" . $error->getMessage());
+    die("Could not connect to the database $dbname :" . $error>getMessage());
 }
 ?>
 
@@ -75,6 +100,26 @@ try {
                 <a class="navbar-brand" href="home.html"><i class="fa fa-bicycle fa-lg"></i> Bike Bowrow KU</a>
                 
             </div>
+            <!-- /.navbar-header บนขวาเผื่อใช้ -->
+
+<!--             <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul> -->
+
+            <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
@@ -115,6 +160,9 @@ try {
                                 </li>
                                 <li>
                                     <a href="./studentHistory.php?search=return"><i class="fa fa-reply fa-fw"></i> Returning</a>
+                                </li>
+                                <li>
+                                    <a href="./studentHistory.php?search=loss"><i class="fa fa-remove fa-fw"></i> Loss</a>
                                 </li>
                                 <li>
                                     <a href="./studentHistory.php?search=all"><i class="fa fa-exchange fa-fw"></i> All</a>
@@ -161,6 +209,8 @@ try {
                                             <th>Order</th>
                                             <th>BikeID</th>
                                             <th>StdID</th>
+                                            <th>Operation</th>
+                                            <th>Date</th>
                                             <th>Time</th>
                                             <th>StaffID</th>
                                         </tr>
@@ -174,6 +224,8 @@ try {
                                                 <td><?php echo htmlspecialchars($row['Order'])?></td>
                                                 <td><?php echo htmlspecialchars($row['BikeID'])?></td>
                                                 <td><?php echo htmlspecialchars($row['StdID'])?></td>
+                                                <td><?php echo htmlspecialchars($row['Operation'])?></td>
+                                                <td><?php echo htmlspecialchars($row['Date'])?></td>
                                                 <td><?php echo htmlspecialchars($row['Time'])?></td>
                                                 <td><?php echo htmlspecialchars($row['StaffID'])?></td>
                                             </tr>

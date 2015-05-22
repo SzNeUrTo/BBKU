@@ -1,12 +1,6 @@
 <?php
 session_start();
-$host = 'localhost';
-$username = 'root';
-$password = 'toor';
-$dbname = 'Borrow_Return_Bike';
-$port = 80;
-
-
+include "dblink.php";
 try {
 		$conn = new PDO("mysql:host=$host;dbname=$dbname".";port=$port", $username, $password);
 		//echo '<p>'.$_SERVER['PHP_SELF'].'</p>';

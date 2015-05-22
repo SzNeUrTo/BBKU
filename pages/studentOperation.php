@@ -5,12 +5,14 @@ $password = 'toor';
 $dbname = 'Borrow_Return_Bike';
 $port = 80;
 
+// if operation = Borrow, Ready, RequestBorrow, RequestReturn
 
 try {
-	$studentID = '0002';
     $conn = new PDO("mysql:host=$host;dbname=$dbname".";port=$port", $username, $password);
 
-    $sql = "SELECT * FROM BlackList, NotPayed WHERE BlackList.Order = NotPayed.Order  AND StdID = '$studentID'"; // Join t
+    $sql = "SELECT *
+            FROM History";
+            //WHERE StdID = '$studentID'";
 
     $qry = $conn -> query($sql);
 } catch (PDOException $error) {
@@ -74,26 +76,6 @@ try {
                 <a class="navbar-brand" href="home.html"><i class="fa fa-bicycle fa-lg"></i> Bike Bowrow KU</a>
                 
             </div>
-            <!-- /.navbar-header บนขวาเผื่อใช้ -->
-
-<!--             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul> -->
-
-            <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
@@ -123,7 +105,7 @@ try {
                         </li>
 
                         <li>
-                            <a href="studentCheckOperation.php"><i class="fa fa-shopping-cart fa-fw"></i> Borrowing / Returning</a>
+                            <a href="studentBorrowReturn.php"><i class="fa fa-shopping-cart fa-fw"></i> Borrowing / Returning</a>
                         </li>
 						<li>
                             <a href="#"><i class="fa fa-history fa-fw"></i> History<span class="fa arrow"></span></a>
@@ -136,7 +118,7 @@ try {
                                     <a href="./studentHistory.php?search=return"><i class="fa fa-reply fa-fw"></i> Returning</a>
                                 </li>
                                 <li>
-                                    <a href="./studentHistory.php?search=lost"><i class="fa fa-remove fa-fw"></i> Loss</a>
+                                    <a href="./studentHistory.php?search=loss"><i class="fa remove fa-fw"></i> Loss</a>
                                 </li>
                                 <li>
                                     <a href="./studentHistory.php?search=all"><i class="fa fa-exchange fa-fw"></i> All</a>
@@ -145,7 +127,7 @@ try {
                         </li>    
 
                             <li>
-                                <a class="active" href="studentAlert.php"><i class="fa fa-bell fa-fw"></i> Alert</a>
+                                <a href="studentAlert.php"><i class="fa fa-bell fa-fw"></i> Alert</a>
                             </li>
 
 
@@ -164,7 +146,7 @@ try {
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Alert</h1>
+                    <h1 class="page-header">History Borrowing</h1>
                 </div>
             </div>
 
@@ -172,7 +154,7 @@ try {
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            Alert
+                            Borrowing
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -181,28 +163,37 @@ try {
                                     <thead>
                                         <tr>
                                             <th>Order</th>
-                                            <th>StdID</th>
                                             <th>BikeID</th>
-                                            <th>Cost</th>
+                                            <th>StdID</th>
+                                            <th>Time</th>
+                                            <th>StaffID</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
+                                        
                                         <!-- Looping -->
                                         <?php while ($row = $qry->fetch()): ?>
                                             <tr>
                                                 <td><?php echo htmlspecialchars($row['Order'])?></td>
-                                                <td><?php echo htmlspecialchars($row['StdID'])?></td>
                                                 <td><?php echo htmlspecialchars($row['BikeID'])?></td>
-                                                <td><?php echo htmlspecialchars($row['Cost'])?></td>
+                                                <td><?php echo htmlspecialchars($row['StdID'])?></td>
+                                                <td><?php echo htmlspecialchars($row['Time'])?></td>
+                                                <td><?php echo htmlspecialchars($row['StaffID'])?></td>
                                             </tr>
                                         <?php endwhile; ?>
+
                                         <!-- Looping -->
                             
                                     </tbody>
                                 </table>
                             </div>
                             <!-- /.table-responsive -->
+							<form class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+								<div class="form-group">
+									<input id="submit" name="submit" type="submit" value="Cancel" class="btn btn-primary center-block">
+								</div>
+							</form>
                         </div>
                         <!-- /.panel-body -->
                     </div>
