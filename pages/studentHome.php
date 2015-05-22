@@ -36,6 +36,35 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+				$("button").click(function(){
+								///alert("submit");
+								alert($("button").text());
+				});
+    });
+    </script>
+
 </head>
 
 <body>
@@ -170,11 +199,11 @@ else {
                                 <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>Rendering engine</th>
+                                            <th>BikeID</th>
                                             <th>Browser</th>
-                                            <th>Platform(s)</th>
-                                            <th>Engine version</th>
-                                            <th>CSS grade</th>
+                                            <th>RequestReturn</th>
+                                            <th>RequestBorrow</th>
+                                            <th>Return</th>
                                         </tr>
                                     </thead>
 
@@ -182,11 +211,23 @@ else {
 
                                         <!-- Looping -->
                                         <tr class="odd gradeX">
-                                            <td>Trident</td>
+                                            <td>0001</td>
                                             <td>Internet Explorer 4.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">4</td>
-                                            <td class="center">X</td>
+											<td class="text-center">
+												<input id="submit" name="submit" value="Cancel" class="btn btn-danger" type="submit">
+
+												</td>
+											<td class="text-center">
+												<input id="submit" name="submit" value="Cancel" class="btn btn-danger" type="submit">
+											</td>
+
+											<td class="text-center">
+												<!--<input id="submit" name="submit" value="Return" class="btn btn-primary" type="submit">
+												<input id="submit" name="submit" value="Loss" class="btn btn-danger" type="submit">-->
+												<button id="submit" class="btn btn-primary">Return</button>
+												<button id="submit" class="btn btn-danger">Loss</button>
+
+</td>
                                         </tr>
                                         <!-- Looping -->
                             
@@ -205,30 +246,6 @@ else {
     </div>
     <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-    <!-- DataTables JavaScript -->
-    <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-                responsive: true
-        });
-    });
-    </script>
 <?php
 }
 ?>
