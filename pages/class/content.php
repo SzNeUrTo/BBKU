@@ -1,29 +1,55 @@
 <?php
 class Content {
+	private $pageName;
+	private $tableName;
+	private $tableHeader = array();
+	private $tableBody = array();
 
-	public function __construct() {
-
+	public function __construct($pageName, $tableName, $queryResult) {
+		$this->pageName = $pageName;
+		$this->tableName = $tableName;
+		$this->findKeyValue($queryResult);
+	}
+	private function findKeyValue($queryResult) {
+		$isFindKeys = false;
+		while($dataRow = $queryResult->fetch(PDO::FETCH_ASSOC)) {
+			if (!$isFindKeys) {
+				foreach ($dataRow as $key=>$value) {
+					$this->tableHeader[] = $key;
+				}
+				$isFindKeys = true;
+			}
+			foreach ($dataRow as $value) {
+				$this->tableBody[] = $value;
+			}
+		}
 	}
 
 	public function generatePageName() {
-		echo "eiei";
+		echo $this->pageName;
 	}
-
 	public function generateTableName() {
-		echo "eiei";
+		echo $this->tableName;
 	}
-
 	public function generateTagTH() {
-		echo "<th>eiei2</th>";
+		foreach ($this->tableHeader as $th) {
+			echo "<th>$th</th>";
+		}
 	}
-
 	public function generateTagTD() {
-		echo "<td>1234</td>";
-	}
 
+		$n = count($this->tableHeader);
+		$m = count($this->tableBody) / $n;
+		for ($i = 0; $i < $m; $i++) {
+			echo "<tr>";
+			for ($j = 0; $j < $n; $j++) {
+				echo "<td>".$this->tableBody[$n*$i + $j]."</td>";
+			}
+			echo "</tr>";
+		}
+	}
 }
 include 'config.php';
-
 class ContentCreator {
 	private $db_connection;
 	private $username;
@@ -31,8 +57,7 @@ class ContentCreator {
 	private $sqlCommand;
 	private $queryResult;
 	private $content;
-
-    public function __construct() {
+	public function __construct() {
 		session_start();
 		$this->userLoggedIn();
 		$this->createConnection();
@@ -40,7 +65,6 @@ class ContentCreator {
 		$this->queryRun();
 		$this->showContent();
 	}
-
 	private function createConnection() {
 		try {
 			$host = DB_HOST;
@@ -53,11 +77,9 @@ class ContentCreator {
 			die("Error : " . $error->getMessage());
 		}
 	}
-
 	public function getContent() {
 		return $this->content;
 	}
-
 	private function doAction() {
 		if (isset($_GET["action"])) {
 			$action = $_GET["action"];
@@ -82,17 +104,14 @@ class ContentCreator {
 	private function goToLogin($action) {
 		header("refresh: 0; url=logout.php?action=$action");
 	}
-
 	private function setContentHome() {
 		//something redirect studentHome.php --> example eiei
 	}
-
 	private function setContentBorrowReturn() {
 		//something 
 		//4 case 3 case is table(extraTable) 1 case is ExtraSelector(BIKE_ID)
 		//check Session check User Status Borrow Ready RequestBorrow RequestReturn
 	}
-
 	private function setContentHistory($search) {
 		if ($search == 'borrow') {
 			$search = " AND Operation = 'Borrow'";
@@ -108,24 +127,20 @@ class ContentCreator {
 		}
 		$this->sqlCommand = "SELECT * FROM History WHERE StdID = '$this->studentID'$search";
 	}
-
 	private function setContentAlert() {
 		$this->sqlCommand = "SELECT * FROM BlackList, NotPayed WHERE BlackList.Order = NotPayed.Order  AND StdID = '$this->studentID'"; // Join t
 		echo "xx";
 	}
-
 	private function queryRun() {
 		$this->queryResult = $this->db_connection->query($this->sqlCommand); // Can Reuse
 	}
-
 	public function getQueryResult() {
 		return $this->queryResult;
 	}
-
 	private function showContent() {
-		//$this->content = new Content(data1, data2, data3);
-		$this->content = new Content();
-		// table if it is table
+		//editHere
+		$this->content = new Content("A", "B", $this->queryResult);
+		//editHere
 	}
 
 	private function userLoggedIn() {
@@ -138,4 +153,3 @@ class ContentCreator {
 		}
 	}
 }
-

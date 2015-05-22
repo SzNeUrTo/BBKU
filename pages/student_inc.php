@@ -122,9 +122,7 @@
                                     </thead>
 
                                     <tbody>
-										<tr>
-                                        	<?php $x->getContent()->generateTagTD(); ?>
-										</tr>
+                                        <?php $x->getContent()->generateTagTD(); ?>
                                     </tbody>
                                 </table>
                             </div>
