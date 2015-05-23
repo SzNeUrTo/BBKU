@@ -110,11 +110,18 @@
 				<!-- Edit Here -->
 <?php 
 $pageAction = $x->getPageAction();
+$status = $x->getStatus();
 echo $pageAction;
 if ($pageAction == 'br') {
-	include 'class/borrow_inc.php';
+	if ($status == "CanReturn") {
+		include 'class/table_inc.php'; 
+	}
+	else {
+		include 'class/borrow_inc.php';
+	}
 }
 else {
+	$status = "";
 	include 'class/table_inc.php'; 
 }
 ?>
@@ -134,7 +141,10 @@ else {
     <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
     <!-- DataTables JavaScript -->
+	<?php if ($pageAction == 'br') echo "<!--"; ?>
     <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+	<?php if ($pageAction == 'br') echo "-->"; ?>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
     <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
@@ -148,20 +158,6 @@ else {
         });
     });
     </script>
-
-	<script>
-		// can delete
-		function removeTableHome() {
-			var currentUrl = window.location.href;
-			var currentPage = currentUrl.split('/');
-			currentPage = currentPage[currentPage.length - 1];
-			console.log(currentPage);
-			if (currentPage == 'student.php?action=home') {
-				var remover = document.getElementById("tableplace");
-				remover.parentNode.removeChild(remover);
-			}
-		}
-	</script>
 
 </body>
 

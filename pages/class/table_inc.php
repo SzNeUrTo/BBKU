@@ -10,13 +10,7 @@
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-example">
 <?php 
-if ($pageAction == 'br') {
-	//echo "brrrr";
-	//include 'borrow_inc.php';
-}
-else {
-	include 'table_normal_inc.php'; 
-}
+include 'table_normal_inc.php'; 
 
 
 ?>

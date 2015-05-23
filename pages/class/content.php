@@ -98,6 +98,10 @@ class ContentCreator {
 		$this->showContent();
 	}
 
+	public function getStatus() {
+		return $this->status;
+	}
+
 	private function createConnection() {
 		try {
 			$host = DB_HOST;
@@ -133,7 +137,7 @@ class ContentCreator {
 				else if ($this->status == "RequestBorrow") {
 					$this->setContentRequest("RequestBorrow");
 				}
-				else if ($this->status == "Return") {
+				else if ($this->status == "CanReturn") {
 					$this->setContentReturn();
 				}
 				else if ($this->status == "RequestReturn") {
@@ -246,7 +250,11 @@ class ContentCreator {
 	}
 
 	private function setContentReturn() {
-		//SELECT BikeID FROM History WHERE StdID = '$this->studentID' AND Operation = 'Borrow' ORDER BY Date,Time DESC LIMIT 1
+		$this->pageHeader = "Return";
+		$this->panelName = "Return";
+		$this->sqlCommand = "SELECT BikeID FROM History WHERE StdID = '$this->studentID' AND Operation = 'Return' ORDER BY Date,Time DESC LIMIT 1";
+		$this->queryRun();
+		$this->bikeid = $this->queryResult->fetch()['BikeID'];
 	}
 
 	private function setContentRequest($request) {

@@ -6,6 +6,15 @@
                                     </thead>
 
                                     <tbody>
-                                        <?php $x->getContent()->generateTagTD(); ?>
+									<?php 
+									if ($status == "CanReturn") {
+										include 'return_inc.php';
+									}
+									else {
+									    $x->getContent()->generateTagTD();
+									}
+											
+											
+?>
                                     </tbody>
 
