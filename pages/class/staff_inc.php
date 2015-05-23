@@ -31,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="home.html"><i class="fa fa-bicycle fa-lg"></i> Bike Bowrow KU</a>
+                <a class="navbar-brand" href="#"><i class="fa fa-bicycle fa-lg"></i> Bike Bowrow KU</a>
                 
             </div>
 
@@ -40,11 +40,11 @@
                     <ul class="nav" id="side-menu">
 
                         <li>
-                            <a href="./staff.php?action=home"><i class="fa fa-user fa-fw"></i> b561050xxxx</a>
+                            <a href="#"><i class="fa fa-user fa-fw"></i> b561050xxxx</a>
                         </li>
 
                         <li>
-                            <a class="active" href="./staff.php?action=home"><i class="fa fa-home fa-fw"></i> Home</a>
+                            <a href="./staff.php?action=home"><i class="fa fa-home fa-fw"></i> Home</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-bicycle fa-fw"></i> Bike<span class="fa arrow"></span></a>
@@ -72,7 +72,7 @@
                                     <a href="./staff.php?action=bike&search=requestloss"><i class="fa fa-close fa-fw"></i> RequestLoss</a>
                                 </li>
                                 <li>
-                                    <a href="./staff.php?action=bike"><i class="fa fa-database fa-fw"></i> All</a>
+                                    <a href="./staff.php?action=bike&search=all"><i class="fa fa-database fa-fw"></i> All</a>
                                 </li>
                             </ul>
                         </li>    
@@ -91,7 +91,7 @@
                                     <a href="./staff.php?action=request&search=loss"><i class="fa fa-close fa-fw"></i> Loss</a>
                                 </li>
                                 <li>
-                                    <a href="./staff.php?action=request"><i class="fa fa-database fa-fw"></i> All</a>
+                                    <a href="./staff.php?action=request&search=all"><i class="fa fa-database fa-fw"></i> All</a>
                                 </li>
                             </ul>
                         </li>    
@@ -104,13 +104,13 @@
                                     <a href="./staff.php?action=history&search=borrow"><i class="fa fa-share fa-fw"></i> Borrowing</a>
                                 </li>
                                 <li>
-                                    <a href="./staff.php?action=history&serach=return"><i class="fa fa-reply fa-fw"></i> Returning</a>
+                                    <a href="./staff.php?action=history&search=return"><i class="fa fa-reply fa-fw"></i> Returning</a>
                                 </li>
                                 <li>
                                     <a href="./staff.php?action=history&search=lost"><i class="fa fa-remove fa-fw"></i> Loss</a>
                                 </li>
                                 <li>
-                                    <a href="./staff.php?action=history"><i class="fa fa-database fa-fw"></i> All</a>
+                                    <a href="./staff.php?action=history&search=all"><i class="fa fa-database fa-fw"></i> All</a>
                                 </li>
                             </ul>
                         </li>    
@@ -126,7 +126,7 @@
                                     <a href="./staff.php?action=repair&search=torepair"><i class="fa fa-close fa-fw"></i> To Repair</a>
                                 </li>
                                 <li>
-                                    <a href="./staff.php?action=repair"><i class="fa fa-database fa-fw"></i> All</a>
+                                    <a href="./staff.php?action=repair&search=all"><i class="fa fa-database fa-fw"></i> All</a>
                                 </li>
                             </ul>
                         </li> 
@@ -141,12 +141,21 @@
                                 <li>
                                     <a href="./staff.php?action=blacklist&search=notpayed"><i class="fa fa-close fa-fw"></i> NotPayed</a>
                                 </li>
-                                <li>
-                                    <a href="./staff.php?action=blacklist"><i class="fa fa-database fa-fw"></i> All</a>
-                                </li>
                             </ul>
                         </li>                          
 
+                        <li>
+                            <a href="#"><i class="fa fa-users fa-fw"></i> Users<span class="fa arrow"></span></a>
+
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="./staff.php?action=student"><i class="fa fa-user fa-fw"></i> Student</a>
+                                </li>
+                                <li>
+                                    <a href="./staff.php?action=staff"><i class="fa fa-star fa-fw"></i> Staff</a>
+                                </li>
+                            </ul>
+                        </li>                          
                         <li>
                             <a href="./staff.php?action=logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>

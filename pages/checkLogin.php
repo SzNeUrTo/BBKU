@@ -17,19 +17,32 @@ try {
 					echo 'do not NULL';
      			}
 				else {
-					$sql = "SELECT COUNT(User) AS c FROM StdAccount WHERE User='$username' AND Pass = '$password'";
+					$sql = "SELECT Status,StdID,COUNT(User) AS c FROM StdAccount WHERE User='$username' AND Pass = '$password'";
 					$qry = $conn -> query($sql);
-					if ($qry -> fetch()['c'] != 0) {
-						//$limitTime = time()+60*60;
-						echo "success";
-						setcookie("username", $username, $limitTime);
-						//setcookie("password", $username, $limitTime);
+					$result = $qry -> fetch();
+					$isCorrect = $result['c'];
+					$studentID = $result['StdID'];
+					$status = $result['Status'];
+					if ($isCorrect != 0) {
+						echo "success_std";
 						$_SESSION['username'] = $username;
-						//var_dump($_SESSION['username']);
-						//$_SESSION['password'] = $password;
+						$_SESSION['studentID'] = $studentID;
+						$_SESSION['status'] = $status;
 					}
 					else {
-						echo 'error';
+						$sql = "SELECT StaffID, COUNT(User) AS c FROM StaffAccount WHERE User='$username' AND Pass = '$password'";
+					  $qry = $conn -> query($sql);
+						$result = $qry -> fetch();
+						$isCorrect = $result['c'];
+						$staffID = $result['StaffID'];
+					  if ($isCorrect != 0) {
+							echo "success_staff";
+							$_SESSION['username'] = $username;
+							$_SESSION['staffID'] = $staffID;
+						}
+						else {
+							echo 'error';
+						}
 					}
 				//echo '<p> **** success ****'.$qry.'</p>';
 			}

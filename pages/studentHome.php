@@ -345,6 +345,7 @@ else {
                 <!-- /.col-lg-12 -->
             </div>
 						<!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+						<img src='bike.jpg' width='300' height='200'>
 				</div>
 		</div>
     <!-- /#wrapper -->

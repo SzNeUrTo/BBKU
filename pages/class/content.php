@@ -123,10 +123,7 @@ class ContentCreator {
 		if (isset($_GET["action"])) {
 			$action = $_GET["action"];
 			$this->pageAction = $action;
-			if ($action == "home") {
-				$this->setContentHome();
-			}
-			else if ($action == "br") {
+			if ($action == "br") {
 				// getting value sending command operation management
 				//$this->setHome();
 				
@@ -156,6 +153,9 @@ class ContentCreator {
 			else if ($action == "logout") {
 				$this->goToLogin("logout");
 			}
+			else {
+				$this->setContentHome();
+			}
 		}
 	}
 
@@ -164,6 +164,7 @@ class ContentCreator {
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$this->bikeid = $_POST['bikeid'];
 			$operation = $_POST['operation'];
+			echo $operation;
 
 			if ($this->status == "CanBorrow") {
 				$this->status = "RequestBorrow";
@@ -276,7 +277,8 @@ class ContentCreator {
 	}
 
 	private function setContentHome() {
-		$this->setContentAlert(); // for test javascript remover table
+		$this->pageHeader = "Home";
+		//$this->setContentAlert(); // for test javascript remover table
 		//something redirect studentHome.php --> example eiei
 	}
 

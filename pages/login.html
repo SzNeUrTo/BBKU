@@ -60,20 +60,24 @@
 					});
 					var data = o;
 					console.log(data);
-					var posting = $.post('studentCheckLogin.php', data);
+					var posting = $.post('checkLogin.php', data);
 					//var posting = $.post('test2_login.php', data);
 					console.log('before post');
 					posting.done(function(data) {
 						console.log('=========');
 						console.log(data);
 						console.log('=========');
-						if (data == 'success') {
+						if (data == 'success_std') {
 							console.log('success post');
-							window.location.href = './studentHome.php';
+							window.location.href = './student.php?action=home';
+						}
+						else if (data == 'success_staff') {
+							console.log('success post');
+							window.location.href = './staff2.html';
 						}
 						else {
 							console.log('fail post');
-							$("#wronguserpwd").text("wrong");
+							$("#wronguserpwd").text("Wrong Username or Password");
 							$("#wronguserpwd").css({"color": "red"});
 						}
 					});
