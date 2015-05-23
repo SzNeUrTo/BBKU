@@ -64,8 +64,9 @@
 				//alert(element.value);
 					var data = element.value;
 					console.log(data);
-					var posting = $.post('class/management.php', data);
+					var posting = $.post('getValue.php', data);
 					console.log('before post');
+/*
 					posting.done(function(data) {
 						console.log('=========');
 						console.log(data);
@@ -78,6 +79,7 @@
 							console.log('fail post');
 							$("#wronguserpwd").text("wrong");
 							$("#wronguserpwd").css({"color": "red"});
+*/
 		}
     </script>
 
@@ -285,10 +287,10 @@ else {
 												<div class="form-group">
 														<h2>BikeID: 0001</h2>
 												</div>
-												<div class="col-lg-2 col-lg-offset-4 col-md-2 col-md-offset-4 col-sm-4 col-sm-offset-2 col-xs-6">
+												<div class="col-lg-2 col-lg-offset-4 col-md-2 col-md-offset-4 col-xs-5 col-xs-offset-1">
 												<input id="return" name="submit" value="Return" class="btn btn-primary btn-lg" type="submit" onclick="getValue(this)">
 												</div>
-												<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+												<div class="col-lg-2 col-md-2 col-xs-5">
 												<input id="loss" name="submit" value="Loss" class="btn btn-danger btn-lg" type="submit" onclick="getValue(this)">
 												</div>
 												</center>
@@ -329,7 +331,7 @@ else {
 												<div class="form-group">
 														<h2>BikeID: 0001</h2>
 												</div>
-												<input id="loss" name="submit" value="Cancel" class="btn btn-warning btn-lg" type="submit" onclick="getValue(this)">
+												<input id="loss" name="submit" value="Cancel" class="btn btn-warning" type="submit" onclick="getValue(this)">
 												</center>
                                         <!-- Looping -->
                             

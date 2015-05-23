@@ -189,10 +189,13 @@ class ContentCreator {
 		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$this->studentID' AND BikeID = '$this->bikeid'";
 		$this->queryRun();
 		$this->sqlCommand = "UPDATE Bike SET Status = 'Borrow' WHERE BikeID = 'this->bikeid'";
-		$this->queryRun();
 	}
 
 	private function queryRequestRL() {
+		
+	}
+
+	private function queryReturn() {
 		if($this->status == "RequestReturn"){
 			$this->sqlCommand = "UPDATE StdAccount SET Status 'RequestReturn' WHERE User = '$this->username'";
 			$this->queryRun();
@@ -211,25 +214,13 @@ class ContentCreator {
 		}
 	}
 
-	private function queryReturn() {
-		$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanReturn' WHERE User = '$this->username'";
-		$this->queryRun();
-		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$this->studentID' AND BikeID = '$this->bikeid'";
-		$this->queryRun();
-		$this->sqlCommand = "UPDATE Bike SET Status = 'Return' WHERE BikeID = 'this->bikeid'";
-		$this->queryRun();
-	}
-
 	private function setContentBorrow() {
-		//SELECT BikeID FROM Bike WHERE Status = 'Ready'
 	}
 
 	private function setContentReturn() {
-		//SELECT BikeID FROM History WHERE StdID = '$this->studentID' AND Operation = 'Borrow' ORDER BY Date,Time DESC LIMIT 1
 	}
 
 	private function setContentRequest($request) {
-		//SELECT BikeID FROM Request WHERE StdID = '$this->studentID'
 	}
 
 	
