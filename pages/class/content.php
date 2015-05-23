@@ -251,14 +251,19 @@ class ContentCreator {
 
 	private function setContentReturn() {
 		$this->pageHeader = "Return";
-		$this->panelName = "Return";
+		$this->panelName = "<h4>You must return the bike by click return. But if the bike is losing, you should click loss.</h4>";
 		$this->sqlCommand = "SELECT BikeID FROM History WHERE StdID = '$this->studentID' AND Operation = 'Return' ORDER BY Date,Time DESC LIMIT 1";
 		$this->queryRun();
 		$this->bikeid = $this->queryResult->fetch()['BikeID'];
 	}
 
 	private function setContentRequest($request) {
-		//SELECT BikeID FROM Request WHERE StdID = '$this->studentID'
+		$this->pageHeader = $request;
+		$this->panelName = "RRRR $request";
+		$this->sqlCommand = "SELECT BikeID FROM Request WHERE StdID = '$this->studentID'";
+		$this->queryRun();
+		$this->bikeid = $this->queryResult->fetch()['BikeID'];
+		var_dump($this->bikeid);
 	}
 
 	public function getBikeID() {
@@ -273,12 +278,6 @@ class ContentCreator {
 	private function setContentHome() {
 		$this->setContentAlert(); // for test javascript remover table
 		//something redirect studentHome.php --> example eiei
-	}
-
-	private function setContentBorrowReturn() {
-		//something 
-		//4 case 3 case is table(extraTable) 1 case is ExtraSelector(BIKE_ID)
-		//check Session check User Status Borrow Ready RequestBorrow RequestReturn
 	}
 
 	private function setContentHistory($search) {

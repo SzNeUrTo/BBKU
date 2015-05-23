@@ -10,6 +10,9 @@
 									if ($status == "CanReturn") {
 										include 'return_inc.php';
 									}
+									else if ($status == "RequestBorrow" || $status == "RequestReturn" || $status == "RequestLoss") {
+										include 'request_inc.php';
+									}
 									else {
 									    $x->getContent()->generateTagTD();
 									}

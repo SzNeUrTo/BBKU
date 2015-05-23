@@ -113,7 +113,7 @@ $pageAction = $x->getPageAction();
 $status = $x->getStatus();
 echo $pageAction;
 if ($pageAction == 'br') {
-	if ($status == "CanReturn") {
+	if ($status == "CanReturn" || $status == "RequestBorrow" || $status == "RequestReturn" || $status == "RequestLoss") {
 		include 'class/table_inc.php'; 
 	}
 	else {
