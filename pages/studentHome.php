@@ -238,11 +238,10 @@ else {
 											</td>
 
 											<td class="text-center">
-												<!--<input id="submit" name="submit" value="Return" class="btn btn-primary" type="submit">
-												<input id="submit" name="submit" value="Loss" class="btn btn-danger" type="submit">-->
-												<input id="return" name="submit" value="Return" class="btn btn-primary" type="submit" onclick="getValue(this)">
-												<input id="loss" name="submit" value="Loss" class="btn btn-danger" type="submit" onclick="getValue(this)">
-</td>
+												<input id="return" name="submit" value="Accept" class="btn btn-success" type="submit" onclick="getValue(this)">
+												<input id="loss" name="submit" value="Reject" class="btn btn-danger" type="submit" onclick="getValue(this)">
+												<input id="loss" name="submit" value="Ruined" class="btn btn-warning" type="submit" onclick="getValue(this)">
+											</td>
                                         </tr>
                                         <!-- Looping -->
                             

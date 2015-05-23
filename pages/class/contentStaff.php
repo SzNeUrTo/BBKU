@@ -167,7 +167,7 @@ class ContentCreator {
 				$search = "NotPayed";
 			}
 			else if ($search == "all") {
-				$search = "";
+				$search = "All";
 			}
 		}
 		//$this->querySearch = $search;
@@ -296,10 +296,10 @@ class ContentCreator {
 	private function setContentRepair($search) {
 		if ($search == "Repaired") {
 			//$this->sqlCommand = "SELECT * FROM History";
-			$this->sqlCommand = "SELECT _Order, BikeID, Description, Cost FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status != 'Repair'";
+			$this->sqlCommand = "SELECT Order, Bike.BikeID, Description, Cost FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status != 'Repair'";
 		} 
 		else if ($search == "ToRepair") {
-			$this->sqlCommand = "SELECT _Order, BikeID, Description, Cost FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status = 'Repair'";
+			$this->sqlCommand = "SELECT Order, Bike.BikeID, Description, Cost FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status = 'Repair'";
 		}
 		else {
 			$this->sqlCommand = "SELECT * FROM Repairing";
@@ -313,21 +313,21 @@ class ContentCreator {
 	// editHere
 	private function setContentBlackList($search) {
 		if ($search == "Payed") {
-			$this->sqlCommand = "SELECT _Order, StdID, BikeID, Cost, StaffID FROM BlackList INNER JOIN Payed ON BlackList.Order = Payed.Order";
+			$this->sqlCommand = "SELECT Payed.Order, StdID, BikeID, Cost, StaffID FROM BlackList INNER JOIN Payed ON BlackList.Order = Payed.Order";
 		}
 		else {
-			$this->sqlCommand = "SELECT _Order, StdID, BikeID, Cost, StaffID FROM BlackList INNER JOIN NotPayed ON BlackList.Order = NotPayed.Order";
+			$this->sqlCommand = "SELECT NotPayed.Order, StdID, BikeID, Cost FROM BlackList INNER JOIN NotPayed ON BlackList.Order = NotPayed.Order";
 		}
 	}
 	//edit Here
 
 	//left join ?
 	private function setContentUserStudent() {
-		$this->sqlCommand = "SELECT StdID,User,Status,FirstName,LastName,MajorCode,Telephone FROM Student LEFT JOIN StdAccount ON Student.StdID = StdAccount.StdID";
+		$this->sqlCommand = "SELECT Student.StdID,User,Status,FirstName,LastName,MajorCode,Telephone FROM Student LEFT JOIN StdAccount ON Student.StdID = StdAccount.StdID";
 	}
 
 	//left join ?
 	private function setContentUserStaff() {
-		$this->sqlCommand = "SELECT StaffID,User,FirstName,LastName,Telephone FROM Staff LEFT JOIN StaffAccount ON Staff.StaffID = StaffAccount.StaffID";
+		$this->sqlCommand = "SELECT Staff.StaffID,User,FirstName,LastName,Telephone FROM Staff LEFT JOIN StaffAccount ON Staff.StaffID = StaffAccount.StaffID";
 	}
 }

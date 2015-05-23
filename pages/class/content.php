@@ -278,7 +278,7 @@ class ContentCreator {
 
 	private function setContentHome() {
 		$this->pageHeader = "Home";
-		//$this->setContentAlert(); // for test javascript remover table
+		$this->setContentAlert(); // for test javascript remover table
 		//something redirect studentHome.php --> example eiei
 	}
 
