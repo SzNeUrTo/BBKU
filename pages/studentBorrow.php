@@ -166,7 +166,8 @@ try {
             </div>
 
             <div class="row">
-            <!-- EditHere -->
+            	<!-- EditHere -->
+                <div class="col-lg-12">
                 <form class="form-horizontal" role="form" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
                     <div class="form-group">
 
@@ -180,6 +181,7 @@ try {
                             <br><br><input id="submit" name="submit" type="submit" value="Borrow" class="btn btn-primary center-block">
                     </div>
                 </form>
+				</div>
                 <!-- EditHere -->
             </div>
         </div>

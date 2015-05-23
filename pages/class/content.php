@@ -1,38 +1,42 @@
 <?php
 class Content {
-	private $pageName;
-	private $tableName;
+	private $pageHeader;
+	private $panelName;
 	private $tableHeader = array();
 	private $tableBody = array();
 	private $showBotton;
+	private $pageAction;
 
-	public function __construct($pageName, $tableName, $queryResult) {
-		$this->pageName = $pageName;
-		$this->tableName = $tableName;
+	public function __construct($pageAction, $pageHeader, $panelName, $queryResult) {
+		$this->pageAction = $pageAction;
+		$this->pageHeader = $pageHeader;
+		$this->panelName = $panelName;
 		$this->findKeyValue($queryResult);
 	}
+
 	private function findKeyValue($queryResult) {
-		$isFindKeys = false;
-		while($dataRow = $queryResult->fetch(PDO::FETCH_ASSOC)) {
-			if (!$isFindKeys) {
-				foreach ($dataRow as $key=>$value) {
-					$this->tableHeader[] = $key;
+		if (!empty($queryResult) && $this->pageAction != 'br') {
+			$isFindKeys = false;
+			while($dataRow = $queryResult->fetch(PDO::FETCH_ASSOC)) {
+				if (!$isFindKeys) {
+					foreach ($dataRow as $key=>$value) {
+						$this->tableHeader[] = $key;
+					}
+					$isFindKeys = true;
 				}
-				$isFindKeys = true;
-			}
-			foreach ($dataRow as $value) {
-				$this->tableBody[] = $value;
+				foreach ($dataRow as $value) {
+					$this->tableBody[] = $value;
+				}
 			}
 		}
 	}
-	//eiei
 
-	public function generatePageName() {
-		echo $this->pageName;
+	public function generatePageHeader() {
+		echo $this->pageHeader;
 	}
 
-	public function generateTableName() {
-		echo $this->tableName;
+	public function generatePanelName() {
+		echo $this->panelName;
 	}
 
 	public function generateTagTH() {
@@ -59,6 +63,14 @@ class Content {
 			echo "<p>No data available</p>";
 		}
 	}
+
+	public function getPageHeader() {
+		return $this->pageHeader;
+	}
+
+	public function getPanelName() {
+		return $this->panelName;
+	}
 }
 
 include 'config.php';
@@ -69,10 +81,11 @@ class ContentCreator {
 	private $sqlCommand;
 	private $queryResult;
 	private $content;
-	private $pageName;
-	private $tableName;
+	private $pageHeader;
+	private $panelName;
 	private $status;
 	private $bikeid;
+	private $pageAction;
 
 	public function __construct() {
 		session_start();
@@ -105,6 +118,7 @@ class ContentCreator {
 	private function doAction() {
 		if (isset($_GET["action"])) {
 			$action = $_GET["action"];
+			$this->pageAction = $action;
 			if ($action == "home") {
 				$this->setContentHome();
 			}
@@ -167,6 +181,10 @@ class ContentCreator {
 		}
 	}
 
+	public function getPageAction() {
+		return $this->pageAction;
+	}
+
 	private function getStatusDB() {
 		$this->sqlCommand = "SELECT Status From StdAccount WHERE User = '$this->username'";
 		$this->queryRun();
@@ -221,7 +239,10 @@ class ContentCreator {
 	}
 
 	private function setContentBorrow() {
-		//SELECT BikeID FROM Bike WHERE Status = 'Ready'
+		$this->pageHeader = "Borrow";
+		$this->panelName = "Borrow";
+		$this->sqlCommand = "SELECT BikeID FROM Bike WHERE Status = 'Ready'";
+		$this->queryRun();
 	}
 
 	private function setContentReturn() {
@@ -230,6 +251,10 @@ class ContentCreator {
 
 	private function setContentRequest($request) {
 		//SELECT BikeID FROM Request WHERE StdID = '$this->studentID'
+	}
+
+	public function getBikeID() {
+		return $this->bikeid;
 	}
 
 	
@@ -251,31 +276,31 @@ class ContentCreator {
 	private function setContentHistory($search) {
 		if ($search == 'borrow') {
 			$search = " AND Operation = 'Borrow'";
-			$this->pageName = "History Borrow";
-			$this->tableName = "History Borrow";
+			$this->pageHeader = "History Borrow";
+			$this->panelName = "History Borrow";
 		}
 		else if ($search == 'return') {
 			$search = " AND Operation = 'Return'";
-			$this->pageName = "History Return";
-			$this->tableName = "History Return";
+			$this->pageHeader = "History Return";
+			$this->panelName = "History Return";
 		}
 		else if ($search == 'loss') {
 			$search = " AND Operation = 'Lost'";
-			$this->pageName = "History Loss";
-			$this->tableName = "History Loss";
+			$this->pageHeader = "History Loss";
+			$this->panelName = "History Loss";
 		}
 		else {
 			$search = ""; 
-			$this->pageName = "History All";
-			$this->tableName = "History All";
+			$this->pageHeader = "History All";
+			$this->panelName = "History All";
 		}
 		$this->sqlCommand = "SELECT * FROM History WHERE StdID = '$this->studentID'$search";
 	}
 
 	private function setContentAlert() {
 		$this->sqlCommand = "SELECT * FROM BlackList, NotPayed WHERE BlackList.Order = NotPayed.Order  AND StdID = '$this->studentID'"; // Join t
-		$this->pageName = "Alert";
-		$this->tableName = "Alert";
+		$this->pageHeader = "Alert";
+		$this->panelName = "Alert";
 		echo "xx";
 	}
 
@@ -289,7 +314,7 @@ class ContentCreator {
 
 	private function showContent() {
 		// edithere add Value something to class Content to create button coloumn javascript to do it work
-		$this->content = new Content($this->pageName, $this->tableName, $this->queryResult);
+		$this->content = new Content($this->pageAction, $this->pageHeader, $this->panelName, $this->queryResult);
 		//editHere
 	}
 

@@ -100,37 +100,25 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        <?php $x->getContent()->generatePageName(); ?>
+                        <?php $x->getContent()->generatePageHeader(); ?>
                     </h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-					<?php if ($_SERVER['QUERY_STRING'] == "action=home") echo "<!--"; ?>
-							
-
-                    <div id='tableplace' class="panel panel-primary">
-                        <div class="panel-heading">
-                            <?php $x->getContent()->generateTableName(); ?>
-                        </div>
-                        <div class="panel-body">
-                            <div class="dataTable_wrapper">
-                                <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <?php $x->getContent()->generateTagTH(); ?>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <?php $x->getContent()->generateTagTD(); ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-					<?php if ($_SERVER['QUERY_STRING'] == "action=home") echo "-->"; ?>
+				<!-- Edit Here -->
+<?php 
+$pageAction = $x->getPageAction();
+echo $pageAction;
+if ($pageAction == 'br') {
+	include 'class/borrow_inc.php';
+}
+else {
+	include 'class/table_inc.php'; 
+}
+?>
+				<!-- Edit Here -->
                 </div>
             </div>
         </div>

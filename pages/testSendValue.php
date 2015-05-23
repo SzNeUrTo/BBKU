@@ -62,14 +62,19 @@
 		
 		function getValue(element) {
 				//alert(element.value);
-					var data = element.value;
+					var o = {};
+					o['operation'] = element.value;
+					
+					var data = o;
 					console.log(data);
 					var posting = $.post('getValue.php', data);
 					console.log('before post');
-/*
 					posting.done(function(data) {
-						console.log('=========');
 						console.log(data);
+					});
+					console.log('after post');
+/*
+						console.log('=========');
 						console.log('=========');
 						if (data == 'success') {
 							console.log('success post');
