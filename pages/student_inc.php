@@ -31,7 +31,7 @@
 
 </head>
 
-<body>
+<body onload="removeTableHome()">
 
     <div id="wrapper">
 
@@ -83,7 +83,7 @@
                         </li>    
 
                         <li>
-                            <a href="s./student.php?action=alert"><i class="fa fa-bell fa-fw"></i> Alert</a>
+                            <a href="./student.php?action=alert"><i class="fa fa-bell fa-fw"></i> Alert</a>
                         </li>
 
 
@@ -107,11 +107,13 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-primary">
+					<?php if ($_SERVER['QUERY_STRING'] == "action=home") echo "<!--"; ?>
+							
+
+                    <div id='tableplace' class="panel panel-primary">
                         <div class="panel-heading">
                             <?php $x->getContent()->generateTableName(); ?>
                         </div>
-                        <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-example">
@@ -128,6 +130,7 @@
                             </div>
                         </div>
                     </div>
+					<?php if ($_SERVER['QUERY_STRING'] == "action=home") echo "-->"; ?>
                 </div>
             </div>
         </div>
@@ -158,6 +161,19 @@
     });
     </script>
 
+	<script>
+		// can delete
+		function removeTableHome() {
+			var currentUrl = window.location.href;
+			var currentPage = currentUrl.split('/');
+			currentPage = currentPage[currentPage.length - 1];
+			console.log(currentPage);
+			if (currentPage == 'student.php?action=home') {
+				var remover = document.getElementById("tableplace");
+				remover.parentNode.removeChild(remover);
+			}
+		}
+	</script>
 
 </body>
 

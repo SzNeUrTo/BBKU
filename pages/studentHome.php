@@ -58,11 +58,27 @@
         $('#dataTables-example').DataTable({
                 responsive: true
         });
-				$("button").click(function(){
-								///alert("submit");
-								alert($("button").text());
-				});
     });
+		
+		function getValue(element) {
+				//alert(element.value);
+					var data = element.value;
+					console.log(data);
+					var posting = $.post('class/management.php', data);
+					console.log('before post');
+					posting.done(function(data) {
+						console.log('=========');
+						console.log(data);
+						console.log('=========');
+						if (data == 'success') {
+							console.log('success post');
+							window.location.href = './studentHome.php';
+						}
+						else {
+							console.log('fail post');
+							$("#wronguserpwd").text("wrong");
+							$("#wronguserpwd").css({"color": "red"});
+		}
     </script>
 
 </head>
@@ -224,9 +240,8 @@ else {
 											<td class="text-center">
 												<!--<input id="submit" name="submit" value="Return" class="btn btn-primary" type="submit">
 												<input id="submit" name="submit" value="Loss" class="btn btn-danger" type="submit">-->
-												<button id="submit" class="btn btn-primary">Return</button>
-												<button id="submit" class="btn btn-danger">Loss</button>
-
+												<input id="return" name="submit" value="Return" class="btn btn-primary" type="submit" onclick="getValue(this)">
+												<input id="loss" name="submit" value="Loss" class="btn btn-danger" type="submit" onclick="getValue(this)">
 </td>
                                         </tr>
                                         <!-- Looping -->
@@ -242,8 +257,93 @@ else {
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-        </div>
-    </div>
+						<!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Borrowing</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+												<h4>You must return the bike by click return.
+										        But if the bike is losing, you should click loss.</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+												<center>
+												<div class="form-group">
+														<h2>BikeID: 0001</h2>
+												</div>
+												
+												<input id="return" name="submit" value="Return" class="btn btn-primary btn-lg" type="submit" onclick="getValue(this)">
+												<input id="loss" name="submit" value="Loss" class="btn btn-danger btn-lg" type="submit" onclick="getValue(this)">
+												</center>
+                                        <!-- Looping -->
+                            
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+						<!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Request Borrow</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+												<h4>You must return the bike by click return.
+										        But if the bike is losing, you should click loss.</h4>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover table-responsive" id="dataTables-example">
+
+                                    <tbody>
+												<center>
+												<div class="form-group">
+														<h2>BikeID: 0001</h2>
+												</div>
+												<input id="loss" name="submit" value="Cancel" class="btn btn-warning" type="submit" onclick="getValue(this)">
+												</center>
+                                        <!-- Looping -->
+                            
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+						<!--xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+				</div>
+		</div>
     <!-- /#wrapper -->
 
 <?php

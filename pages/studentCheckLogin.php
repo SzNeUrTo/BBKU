@@ -17,15 +17,17 @@ try {
 					echo 'do not NULL';
      			}
 				else {
-					$sql = "SELECT StdID,COUNT(User) AS c FROM StdAccount WHERE User='$username' AND Pass = '$password'";
+					$sql = "SELECT Status,StdID,COUNT(User) AS c FROM StdAccount WHERE User='$username' AND Pass = '$password'";
 					$qry = $conn -> query($sql);
 					$result = $qry -> fetch();
 					$isCorrect = $result['c'];
 					$studentID = $result['StdID'];
+					$status = $result['Status'];
 					if ($isCorrect != 0) {
 						echo "success";
 						$_SESSION['username'] = $username;
 						$_SESSION['studentID'] = $studentID;
+						$_SESSION['status'] = $status;
 					}
 					else {
 						echo 'error';

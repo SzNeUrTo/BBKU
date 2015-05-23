@@ -4,7 +4,6 @@ class Content {
 	private $tableName;
 	private $tableHeader = array();
 	private $tableBody = array();
-	private $showBotton;
 
 	public function __construct($pageName, $tableName, $queryResult) {
 		$this->pageName = $pageName;
@@ -29,18 +28,14 @@ class Content {
 	public function generatePageName() {
 		echo $this->pageName;
 	}
-
 	public function generateTableName() {
 		echo $this->tableName;
 	}
-
 	public function generateTagTH() {
 		foreach ($this->tableHeader as $th) {
 			echo "<th>$th</th>";
 		}
-		// echo ifelse "<th>btn action to something...</th>> fun("th") fun("td");
 	}
-
 	public function generateTagTD() {
 
 		$n = count($this->tableHeader);
@@ -48,14 +43,9 @@ class Content {
 		for ($i = 0; $i < $m; $i++) {
 			echo "<tr>";
 			for ($j = 0; $j < $n; $j++) {
-				//check Link createLink array 2 dims maps and create case possible get form column
 				echo "<td>".$this->tableBody[$n*$i + $j]."</td>";
 			}
-			// echo <td>btn1 btn2 btn3</td> if else
 			echo "</tr>";
-		}
-		if (count($this->tableBody) == 0) {
-			echo "<p>No data available</p>";
 		}
 	}
 }
@@ -70,17 +60,13 @@ class ContentCreator {
 	private $content;
 	private $pageName;
 	private $tableName;
-	private $status;
-	private $bikeid;
 
 	public function __construct() {
 		session_start();
 		$this->userLoggedIn();
 		$this->createConnection();
-		$this->getStatusDB();
-		$this->updateStatus();
 		$this->doAction();
-		$this->queryRun();
+		//$this->queryRun();
 		$this->showContent();
 	}
 
@@ -108,25 +94,7 @@ class ContentCreator {
 				$this->setContentHome();
 			}
 			else if ($action == "br") {
-				// getting value sending command operation management
 				//$this->setHome();
-				
-				$this->status = $_SESSION["status"];
-				if ($this->status == "CanBorrow") {
-					$this->setContentBorrow();
-				}
-				else if ($this->status == "RequestBorrow") {
-					$this->setContentRequest("RequestBorrow");
-				}
-				else if ($this->status == "Return") {
-					$this->setContentReturn();
-				}
-				else if ($this->status == "RequestReturn") {
-					$this->setContentRequest("RequestReturn");
-				}
-				else if ($this->status == "RequestLoss") {
-					$this->setContentRequest("RequestLoss");
-				}
 			}
 			else if ($action == "history") {
 				$this->setContentHistory($_GET["search"]);
@@ -139,67 +107,12 @@ class ContentCreator {
 			}
 		}
 	}
-
-	private function updateStatus() {
-		// get status from sql because staff update not section
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			$this->bikeid = $_POST['bikeid'];
-			$operation = $_POST['operation'];
-
-			if ($this->status == "CanBorrow") {
-				$this->status = "RequestBorrow";
-				$this->queryReuestBorrow();
-			}
-			else if ($this->status == "RequestBorrow") {
-				$this->status = "CanBorrow";
-				$this->queryBorrow();
-			}
-			else if ($this->status == "Return") {
-				$this->status = $operation;
-				$this->queryRequestRL();
-			}
-			else if ($this->status == "RequestReturn" || $this->status == "RequestLoss") {
-				$this->status = "Return";
-				$this->queryReturn();
-			}
-			$_SESSION['status'] = $this->status;
-		}
-	}
-
-	private function getStatusDB() {
-		//qry
-		//$this->status = 
-		$_SESSION['status'] = $this->status;
-	}
-
-	private function queryReuestBorrow() {
-	}
-
-	private function queryBorrow() {
-	}
-
-	private function queryRequestRL() {
-	}
-
-	private function queryReturn() {
-	}
-
-	private function setContentBorrow() {
-	}
-
-	private function setContentReturn() {
-	}
-
-	private function setContentRequest($request) {
-	}
-
 	
 	private function goToLogin($action) {
 		header("refresh: 0; url=logout.php?action=$action");
 	}
 
 	private function setContentHome() {
-		$this->setContentAlert(); // for test javascript remover table
 		//something redirect studentHome.php --> example eiei
 	}
 
@@ -249,7 +162,7 @@ class ContentCreator {
 	}
 
 	private function showContent() {
-		// edithere add Value something to class Content to create button coloumn javascript to do it work
+		//editHere
 		$this->content = new Content($this->pageName, $this->tableName, $this->queryResult);
 		//editHere
 	}
@@ -261,7 +174,6 @@ class ContentCreator {
 		else {
 			$this->username = $_SESSION['username'];
 			$this->studentID = $_SESSION['studentID'];
-			$this->status = $_SESSION['status'];
 		}
 	}
 }
