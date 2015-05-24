@@ -147,12 +147,12 @@ class ContentCreator {
 
 	private function userLoggedIn() {
 		if (!isset($_SESSION['username'])) {
-			// $this->goToLogin("relogin");
-			echo "";
+			$this->goToLogin("relogin");
+			//echo "";
 		}
 		else {
 			$this->username = $_SESSION['username'];
-			$this->studentID = $_SESSION['staff_id'];
+			$this->staffID = $_SESSION['staffID'];
 			$this->status = $_SESSION['status']; //status = staff
 		}
 	}
@@ -248,6 +248,7 @@ class ContentCreator {
 			else if ($action == "Paid") {
 				$this->queryPaid($order);
 			}
+			die('die page');
 		}
 	}
 
@@ -281,10 +282,11 @@ class ContentCreator {
 		}
 		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$studentID'";
 		$this->queryRun();
-		// add History Follow by TypeRequest
 		
-		//$this->sqlCommand = "INSERT INTO History VALUES (0, '$bikeID', '$studentID', '$typeRequest',#date("Y-m-d")#,#date("h:i:s")','$this->staffID')";
-		//$this->queryRun();
+		$dateNow = date("Y-m-d");
+		$timeNow = date("h:i:s");
+		$this->sqlCommand = "INSERT INTO History VALUES (0, '$bikeID', '$studentID', '$typeRequest', '$dateNow', '$timeNow', '$this->staffID')";
+		$this->queryRun();
 	}
 
 	private function queryReject($studentID, $typeRequest, $bikeID) {
@@ -321,7 +323,10 @@ class ContentCreator {
 			$order = $this->queryResult->fetch()['Ordering'];
 			$this->sqlCommand = "INSERT INTO NotPayed VALUES ('$order')";
 			$this->queryRun();
-			// add History Return
+			$dateNow = date("Y-m-d");
+			$timeNow = date("h:i:s");
+			$this->sqlCommand = "INSERT INTO History VALUES (0, '$bikeID', '$studentID', '$typeRequest', '$dateNow', '$timeNow', '$this->staffID')";
+			$this->queryRun();
 		}
 	}
 
