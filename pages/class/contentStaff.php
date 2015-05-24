@@ -5,6 +5,7 @@ class Content {
 	private $tableHeader = array();
 	private $tableBody = array();
 	private $pageAction;
+	private $dataTable = array();
 
 	public function __construct($pageAction, $pageHeader, $panelName, $queryResult) {
 		$this->pageAction = $pageAction;
@@ -14,7 +15,7 @@ class Content {
 	}
 
 	private function findKeyValue($queryResult) {
-		if (!empty($queryResult) && $this->pageAction != 'br') {
+		if (!empty($queryResult)) {
 			$isFindKeys = false;
 			while($dataRow = $queryResult->fetch(PDO::FETCH_ASSOC)) {
 				if (!$isFindKeys) {
@@ -26,6 +27,7 @@ class Content {
 				foreach ($dataRow as $value) {
 					$this->tableBody[] = $value;
 				}
+				$this->dataTable[] = $dataRow;
 			}
 		}
 	}
@@ -42,7 +44,49 @@ class Content {
 		foreach ($this->tableHeader as $th) {
 			echo "<th>$th</th>";
 		}
+		$this->generateBtnTagTH();
 		// echo ifelse "<th>btn action to something...</th>> fun("th") fun("td");
+	}
+
+	private function generateBtnTagTH() {
+		if ($this->pageAction != "" && !empty($this->tableHeader)) {
+			echo '<th>Submit</th>';
+		}
+	}
+
+	private function generateBtnTagTD($i) {
+		$j = 0;
+		if ($this->pageAction != "" && !empty($this->tableHeader)) {
+			echo "<td class='text-center'>";
+			if ($this->pageAction == "Borrow" || $this->pageAction == "Return" || $this->pageAction == "Loss" || $this->pageAction == "All") {
+				$btnDisable = 'false';
+				if ($this->dataTable[$i]['Type'] == "Borrow" || $this->dataTable[$i]['Type'] == "Loss") {
+					$btnDisable = 'true';
+				}
+				$studentID = $this->dataTable[$i]['StdID'];
+				$type = $this->dataTable[$i]['Type'];
+				$studentID = "'$studentID'";
+				$type = "'$type'";
+				echo '<input value="Accept" class="btn btn-success" type="submit"'.$st.'>';
+				echo '<input value="Reject" class="btn btn-danger" type="submit"'.$st.'>';
+				echo "<input value=\"Ruined\" class=\"btn btn-warning\" type=\"submit\" disabled=\"$btnDisable\" $st>";
+			}
+			else if ($this->pageAction == "ToRepair") {
+				$order = $this->dataTable[$i]['Order'];
+				$st = "onclick=\"editInfo(".$order.")\"";
+				echo '<input value="Edit" class="btn btn-danger" type="submit"'.$st.'>';
+				$st = "onclick=\"complete(".$order.")\"";
+				echo '<input value="Complete" class="btn btn-success" type="submit"'.$st.'>';
+			}
+			else if ($this->pageAction == "NotPayed") {
+				echo '<input value="Paid" class="btn btn-success" type="submit" onclick="paidMoney('.$this->dataTable[$i]['Order'].')">';
+			}
+
+	//<button value="accept" class="btn btn-success" type="submit" onclick="getValue(this)">Accept</button>
+//	<button value="reject" class="btn btn-danger" type="submit" onclick="getValue(this)">Reject</button>
+//	<button value="ruined" class="btn btn-warning" type="submit" onclick="getValue(this)">Ruined</button>
+			echo "</td>";
+		}
 	}
 
 	public function generateTagTD() {
@@ -50,12 +94,14 @@ class Content {
 		$n = count($this->tableHeader);
 		$m = count($this->tableBody) / $n;
 		for ($i = 0; $i < $m; $i++) {
-			echo "<tr>";
+			//echo "<tr>";
+			echo '<tr class="odd gradeX">';
 			for ($j = 0; $j < $n; $j++) {
 				//check Link createLink array 2 dims maps and create case possible get form column
 				echo "<td>".$this->tableBody[$n*$i + $j]."</td>";
 			}
 			// echo <td>btn1 btn2 btn3</td> if else
+			$this->generateBtnTagTD($i);
 			echo "</tr>";
 		}
 		if (count($this->tableBody) == 0) {
@@ -90,6 +136,7 @@ class ContentCreator {
 		session_start();
 		$this->userLoggedIn();
 		$this->createConnection();
+		//$this->staffAction();
 		$this->doAction();
 		$this->queryRun();
 		$this->showContent();
@@ -178,7 +225,7 @@ class ContentCreator {
 	private function doAction() {
 		if (isset($_GET["action"])) {
 			$action = $_GET["action"];
-			$this->pageAction = $action;
+			$this->pageAction = "";
 			$search = $this->convertSearchStr();
 			if ($action == "bike") {
 				$this->setContentBike($search);
@@ -276,6 +323,7 @@ class ContentCreator {
 			$this->sqlCommand = "SELECT * FROM Request";
 			$search = "All";
 		}
+		$this->pageAction = $search;
 		$this->pageHeader = "Request ($search)";
 		$this->panelName = "Request ($search)";
 	}
@@ -297,6 +345,7 @@ class ContentCreator {
 			$this->sqlCommand = "SELECT * FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status != 'Repair'";
 		} 
 		else if ($search == "ToRepair") {
+			$this->pageAction = $search;
 			$this->sqlCommand = "SELECT * FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status = 'Repair'";
 		}
 		else {
@@ -315,6 +364,7 @@ class ContentCreator {
 		}
 		else {
 			$this->sqlCommand = "SELECT NotPayed.Order, StdID, BikeID, Cost FROM BlackList INNER JOIN NotPayed ON BlackList.Order = NotPayed.Order";
+			$this->pageAction = "NotPayed";
 		}
 		$this->pageHeader = "BlackList ($search)";
 		$this->panelName = "BlackList ($search)";
