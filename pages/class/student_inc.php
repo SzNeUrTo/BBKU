@@ -31,7 +31,7 @@
 
 </head>
 
-<body onload="removeTableHome()">
+<body> 
 
     <div id="wrapper">
 
@@ -143,33 +143,44 @@ else {
     <!-- DataTables JavaScript -->
 	<?php if ($pageAction == 'br') echo "<!--"; ?>
     <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 	<?php if ($pageAction == 'br') echo "-->"; ?>
-    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
-    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
+	<?php if ($pageAction == 'br') echo "/*"; ?>
     $(document).ready(function() {
         $('#dataTables-example').DataTable({
                 responsive: true
         });
     });
-		function getValue(element) {
-				  alert(element.value);
-					var o = {};
-					o['operation'] = element.value;
-					var data = o;
-					console.log(data);
-					var posting = $.post('content.php', data);
-					console.log('before post');
-					posting.done(function(data) {
-						console.log(data);
-					});
-					console.log('after post');
-		}
+	<?php if ($pageAction == 'br') echo "*/"; ?>
+//		function sendValue(element) {
+//				  alert(element.value);
+//					var o = {};
+//					var value = element.value;
+//					if (value == "Return") {
+//						value = "RequestReturn";
+//					}
+//					else if (value == "Loss") {
+//						value = "RequestLoss";
+//					}
+//					console.log(value);
+//					o['operation'] = value;
+//					var data = o;
+//					console.log(data);
+//					var posting = $.post('./student.php?action=br', data);
+//					console.log('before post');
+//					posting.done(function(data) {
+//						console.log(data);
+//					});
+//				//	console.log('after post');
+//					//window.location.href = "./student.php?action=br";
+		//}
     </script>
 
 </body>

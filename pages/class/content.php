@@ -121,6 +121,7 @@ class ContentCreator {
 
 	private function doAction() {
 		if (isset($_GET["action"])) {
+			var_dump($this->studentID);
 			$action = $_GET["action"];
 			$this->pageAction = $action;
 			if ($action == "br") {
@@ -174,7 +175,7 @@ class ContentCreator {
 				$this->status = "CanBorrow";
 				$this->queryBorrow();
 			}
-			else if ($this->status == "Return") {
+			else if ($this->status == "CanReturn") {
 				$this->status = $operation; 
 				$this->queryRequestRL();
 			}
@@ -183,6 +184,7 @@ class ContentCreator {
 				$this->queryReturn();
 			}
 			$_SESSION['status'] = $this->status;
+			//header("refresh: 0; url=student.php?action=br");
 		}
 	}
 
@@ -209,15 +211,15 @@ class ContentCreator {
 	private function queryBorrow() {
 		$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanBorrow' Where User = '$this->username'";
 		$this->queryRun();
-		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$this->studentID' AND BikeID = '$this->bikeid'";
+		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$this->studentID'";
 		$this->queryRun();
-		$this->sqlCommand = "UPDATE Bike SET Status = 'Borrow' WHERE BikeID = 'this->bikeid'";
+		$this->sqlCommand = "UPDATE Bike SET Status = 'Ready' WHERE BikeID = '$this->bikeid'";
 		$this->queryRun();
 	}
 
 	private function queryRequestRL() {
 		if($this->status == "RequestReturn"){
-			$this->sqlCommand = "UPDATE StdAccount SET Status 'RequestReturn' WHERE User = '$this->username'";
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'RequestReturn' WHERE User = '$this->username'";
 			$this->queryRun();
 			$this->sqlCommand = "INSERT INTO Request VALUES('$this->bikeid','$this->studentID','Return')";
 			$this->queryRun();
@@ -225,7 +227,7 @@ class ContentCreator {
 			$this->queryRun();
 		}
 		else if($this->status == "RequestLoss"){
-			$this->sqlCommand = "UPDATE StdAccount SET Status 'RequestLoss' WHERE User = '$this->username'";
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'RequestLoss' WHERE User = '$this->username'";
 			$this->queryRun();
 			$this->sqlCommand = "INSERT INTO Request VALUES('$this->bikeid','$this->studentID','Loss')";
 			$this->queryRun();
@@ -239,7 +241,7 @@ class ContentCreator {
 		$this->queryRun();
 		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$this->studentID' AND BikeID = '$this->bikeid'";
 		$this->queryRun();
-		$this->sqlCommand = "UPDATE Bike SET Status = 'Return' WHERE BikeID = 'this->bikeid'";
+		$this->sqlCommand = "UPDATE Bike SET Status = 'Return' WHERE BikeID = '$this->bikeid'";
 		$this->queryRun();
 	}
 
@@ -253,18 +255,18 @@ class ContentCreator {
 	private function setContentReturn() {
 		$this->pageHeader = "Return";
 		$this->panelName = "<h4>You must return the bike by click return. But if the bike is losing, you should click loss.</h4>";
-		$this->sqlCommand = "SELECT BikeID FROM History WHERE StdID = '$this->studentID' AND Operation = 'Return' ORDER BY Date,Time DESC LIMIT 1";
+		$this->sqlCommand = "SELECT BikeID FROM History WHERE StdID = '$this->studentID' AND Operation = 'Borrow' ORDER BY Date,Time DESC LIMIT 1";
 		$this->queryRun();
 		$this->bikeid = $this->queryResult->fetch()['BikeID'];
 	}
 
 	private function setContentRequest($request) {
 		$this->pageHeader = $request;
-		$this->panelName = "RRRR $request";
+		$this->panelName = "$request";
 		$this->sqlCommand = "SELECT BikeID FROM Request WHERE StdID = '$this->studentID'";
 		$this->queryRun();
 		$this->bikeid = $this->queryResult->fetch()['BikeID'];
-		var_dump($this->bikeid);
+		//var_dump($this->queryResult->fetch());
 	}
 
 	public function getBikeID() {
@@ -278,7 +280,8 @@ class ContentCreator {
 
 	private function setContentHome() {
 		$this->pageHeader = "Home";
-		$this->setContentAlert(); // for test javascript remover table
+		$this->panelName = "Home";
+		//$this->setContentAlert(); // for test javascript remover table
 		//something redirect studentHome.php --> example eiei
 	}
 

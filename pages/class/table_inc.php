@@ -1,5 +1,5 @@
 
-					<?php if ($_SERVER['QUERY_STRING'] == "action=home") echo "<br><img src='../bike.jpg' class='img-response' alt='Kasetsart University' width='300' height='200'><!--"; ?>
+					<?php if ($_SERVER['QUERY_STRING'] == "action=home") echo "<br><img src='../image/bike.jpg' class='img-response' alt='Kasetsart University' width='640' height='480'><!--"; ?>
 							
 
                     <div id='tableplace' class="panel panel-primary">

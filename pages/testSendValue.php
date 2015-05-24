@@ -29,13 +29,6 @@
     <!-- Custom Fonts -->
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>file:///Users/SugarSeeker/Downloads/SA_ADMIN/pages/blank.html#
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
     <!-- jQuery -->
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -67,24 +60,15 @@
 					
 					var data = o;
 					console.log(data);
+					self = this;
 					var posting = $.post('getValue.php', data);
 					console.log('before post');
 					posting.done(function(data) {
-						console.log(data);
+						self.data = this.data;
 					});
+					console.log("===================");
+					console.log(data);
 					console.log('after post');
-/*
-						console.log('=========');
-						console.log('=========');
-						if (data == 'success') {
-							console.log('success post');
-							window.location.href = './studentHome.php';
-						}
-						else {
-							console.log('fail post');
-							$("#wronguserpwd").text("wrong");
-							$("#wronguserpwd").css({"color": "red"});
-*/
 		}
     </script>
 
@@ -115,48 +99,13 @@ else {
                 <a class="navbar-brand" href="home.html"><i class="fa fa-bicycle fa-lg"></i> Bike Bowrow KU</a>
                 
             </div>
-            <!-- /.navbar-header บนขวาเผื่อใช้ -->
-
-<!--             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul> -->
-
             <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                     
-                        <!-- start search -->
-
- <!--                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </li> -->
-
-                        <!-- end search -->
-
                         <li>
-                            <!--<a href="profile.html"><i class="fa fa-user fa-fw"></i> b561050xxxx</a>-->
 														<a href="profile.html"><i class="fa fa-user fa-fw"></i><?php echo $username; ?></a>
                         </li>
 
@@ -247,8 +196,8 @@ else {
 											<td class="text-center">
 												<!--<input id="submit" name="submit" value="Return" class="btn btn-primary" type="submit">
 												<input id="submit" name="submit" value="Loss" class="btn btn-danger" type="submit">-->
-												<input id="return" name="submit" value="Return" class="btn btn-primary" type="submit" onclick="getValue(this)">
-												<input id="loss" name="submit" value="Loss" class="btn btn-danger" type="submit" onclick="getValue(this)">
+												<input id="return" name="submit" value="Return" class="btn btn-primary" type="submit" onsubmit="getValue(this)">
+												<input id="loss" name="submit" value="Loss" class="btn btn-danger" type="submit" onsubmit="getValue(this)">
 </td>
                                         </tr>
                                         <!-- Looping -->
