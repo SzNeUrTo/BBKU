@@ -78,7 +78,8 @@ class Content {
 				$order = $this->dataTable[$i]['Ordering'];
 				$bikeID = $this->dataTable[$i]['BikeID'];
 				$st = "onclick=\"editInfo(".$order.","."'".$bikeID."'".")\"";
-				echo '<input value="Edit" class="btn btn-danger" type="submit"'.$st.'>';
+				echo '<button value='.'\''.$order.'\''.'type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" '.$st.'>Edit</button>';
+				//echo '<input value="Edit" class="btn btn-danger" type="submit"'.$st.'>';
 				$st = "onclick=\"complete(".$order.","."'".$bikeID."'".")\"";
 				echo '<input value="Complete" class="btn btn-success" type="submit"'.$st.'>';
 			}

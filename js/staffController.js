@@ -12,8 +12,23 @@ function requestAction(action, studentID, typeRequest, bikeID) {
 	});
 }
 
+var order;
+var bikeID;
+var self = this;
 function editInfo(order, bikeID) {
-	console.log("order : " + order);
+	self.order = order;
+	self.bikeID = bikeID;
+	var oooLabel = document.getElementById('ooo');
+	var bbbLabel = document.getElementById('bbb');
+	oooLabel.innerHTML = order;
+	bbbLabel.innerHTML = bikeID;
+	ccc.value = "";
+	ddd.value = "";
+}
+
+function saveInfo() {
+	console.log('save : ' + ooo);
+	console.log('save : ' + bikeID);
 }
 
 function complete(order, bikeID) {

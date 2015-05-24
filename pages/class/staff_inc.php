@@ -77,7 +77,7 @@
                     <ul class="nav" id="side-menu">
 
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> b561050xxxx</a>
+												<a href="#"><i class="fa fa-user fa-fw"></i><?php echo $_SESSION['username']?></a>
                         </li>
 
                         <li>
@@ -216,6 +216,60 @@
                 <!-- Edit Here -->
         </div>
     </div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+					<h4 class="modal-title" id="myModalLabel">EditValue</h4>
+				</div>
+				<div class="modal-body">
+<form class="form-horizontal" role="form" method="post" action="/dbtest/postData.php">
+<cetner>
+	<div class="form-group">
+		<label for="name" class="col-sm-2 col-xs-12 control-label">Ordering : </label>
+		<div class="col-lg-8 col-md-8 col-sm-10 col-xs-10 ">
+			<label for="name" class="control-label" id="ooo">0001</label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="name" class="col-sm-2 col-xs-12 control-label">BikeID : </label>
+		<div class="col-lg-8 col-md-8 col-sm-10 col-xs-10 ">
+		<label for="name" class="control-label" id="bbb">0001</label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="name" class="col-sm-2 col-xs-12 control-label">Cost</label>
+		<div class="col-lg-8 col-md-8 col-sm-10 col-xs-10 ">
+			<input id="ccc" type="text" class="form-control" id="nickname" name="nickname" placeholder="Cost" value="">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="name" class="col-sm-2 col-xs-12 control-label">Description</label>
+		<div class="col-lg-8 col-md-8 col-sm-10 col-xs-10 ">
+			<input id="ddd" type="text" class="form-control" id="age" name="age" placeholder="Description" value="">
+			<!-- <input id="submit" name="submit" type="submit" value="Send" class="btn btn-primary"> -->
+		</div>
+	</div>
+
+</cetner>
+</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveInfo()">Save changes</button>
+		 			<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+  $('#myModal').modal(options)
+</script>
 
 </body>
 
