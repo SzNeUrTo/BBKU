@@ -310,7 +310,7 @@ class ContentCreator {
 	}
 
 	private function setContentAlert() {
-		$this->sqlCommand = "SELECT * FROM BlackList, NotPayed WHERE BlackList.Order = NotPayed.Order  AND StdID = '$this->studentID'"; // Join t
+		$this->sqlCommand = "SELECT * FROM BlackList, NotPayed WHERE BlackList.Ordering = NotPayed.Ordering  AND StdID = '$this->studentID'"; // Join t
 		$this->pageHeader = "Alert";
 		$this->panelName = "Alert";
 		echo "xx";

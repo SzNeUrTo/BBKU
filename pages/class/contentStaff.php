@@ -66,25 +66,25 @@ class Content {
 				$studentID = $this->dataTable[$i]['StdID'];
 				$type = $this->dataTable[$i]['Type'];
 				$studentID = "'$studentID'";
+				$bikeID = $this->dataTable[$i]['BikeID'];
+				$bikeID = "'$bikeID'";
 				$type = "'$type'";
+				$st = " onclick=\"requestAction(this.value,".$studentID.",".$type.",".$bikeID.")\"";
 				echo '<input value="Accept" class="btn btn-success" type="submit"'.$st.'>';
 				echo '<input value="Reject" class="btn btn-danger" type="submit"'.$st.'>';
 				echo "<input value=\"Ruined\" class=\"btn btn-warning\" type=\"submit\" disabled=\"$btnDisable\" $st>";
 			}
 			else if ($this->pageAction == "ToRepair") {
-				$order = $this->dataTable[$i]['Order'];
-				$st = "onclick=\"editInfo(".$order.")\"";
+				$order = $this->dataTable[$i]['Ordering'];
+				$bikeID = $this->dataTable[$i]['BikeID'];
+				$st = "onclick=\"editInfo(".$order.","."'".$bikeID."'".")\"";
 				echo '<input value="Edit" class="btn btn-danger" type="submit"'.$st.'>';
-				$st = "onclick=\"complete(".$order.")\"";
+				$st = "onclick=\"complete(".$order.","."'".$bikeID."'".")\"";
 				echo '<input value="Complete" class="btn btn-success" type="submit"'.$st.'>';
 			}
 			else if ($this->pageAction == "NotPayed") {
-				echo '<input value="Paid" class="btn btn-success" type="submit" onclick="paidMoney('.$this->dataTable[$i]['Order'].')">';
+				echo '<input value="Paid" class="btn btn-success" type="submit" onclick="paidMoney('.$this->dataTable[$i]['Ordering'].')">';
 			}
-
-	//<button value="accept" class="btn btn-success" type="submit" onclick="getValue(this)">Accept</button>
-//	<button value="reject" class="btn btn-danger" type="submit" onclick="getValue(this)">Reject</button>
-//	<button value="ruined" class="btn btn-warning" type="submit" onclick="getValue(this)">Ruined</button>
 			echo "</td>";
 		}
 	}
@@ -136,7 +136,7 @@ class ContentCreator {
 		session_start();
 		$this->userLoggedIn();
 		$this->createConnection();
-		//$this->staffAction();
+		$this->staffAction();
 		$this->doAction();
 		$this->queryRun();
 		$this->showContent();
@@ -221,6 +221,122 @@ class ContentCreator {
 		return $search;
 	}
 	// can move to define
+	private function staffAction() {
+		if (isset($_POST["action"])) {
+			$action = $_POST["action"];
+			$studentID = $_POST["studentID"];
+			$typeRequest = $_POST["typeRequest"];
+			$bikeID = $_POST["bikeID"];
+			$order = $_POST["order"];
+			if ($action == "Accept") {
+				$this->queryAccept($studentID, $typeRequest, $bikeID);
+			}
+			else if ($action == "Reject") {
+				$this->queryReject($studentID, $typeRequest, $bikeID);
+			}
+			else if ($action == "Ruined") {
+				$this->queryRuined($studentID, $typeRequest, $bikeID);
+			}
+			else if ($action == "EditInfo") {
+				// edit here
+				$this->queryEditInfo($studentID, $typeRequest, $bikeID);
+				// edit here
+			}
+			else if ($action == "Complete") {
+				$this->queryComplete($order, $bikeID);
+			}
+			else if ($action == "Paid") {
+				$this->queryPaid($order);
+			}
+		}
+	}
+
+	// history
+	private function queryAccept($studentID, $typeRequest, $bikeID) {
+		if ($typeRequest == "Borrow") {
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanReturn' WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "UPDATE Bike SET Status = 'Borrow' WHERE BikeID = '$bikeID'";
+			$this->queryRun();
+		}
+		else if ($typeRequest == "Return") {
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanBorrow' WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "UPDATE Bike SET Status = 'Ready' WHERE BikeID = '$bikeID'";
+			$this->queryRun();
+		}
+		else if ($typeRequest == "Loss") {
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanBorrow' WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "UPDATE Bike SET Status = 'Loss' WHERE BikeID = '$bikeID'";
+			$this->queryRun();
+			$this->sqlCommand = "INSERT INTO BlackList VALUES (0, '$bikeID', '$studentID', NULL)";
+			$this->queryRun();
+			$this->sqlCommand = "SELECT Ordering FROM BlackList WHERE StdID = '$studentID' Order by Ordering DESC LIMIT 1";
+			$this->queryRun();
+			$order = $this->queryResult->fetch()['Ordering'];
+			$this->sqlCommand = "INSERT INTO NotPayed VALUES ('$order')";
+			$this->queryRun();
+			$typeRequest = "Lost";
+		}
+		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$studentID'";
+		$this->queryRun();
+		// add History Follow by TypeRequest
+		
+		//$this->sqlCommand = "INSERT INTO History VALUES (0, '$bikeID', '$studentID', '$typeRequest',#date("Y-m-d")#,#date("h:i:s")','$this->staffID')";
+		//$this->queryRun();
+	}
+
+	private function queryReject($studentID, $typeRequest, $bikeID) {
+		if ($typeRequest == "Borrow") {
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'Borrow' WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "UPDATE Bike SET Status = 'Ready' WHERE BikeID = '$bikeID'";
+			$this->queryRun();
+		}
+		else if ($typeRequest == "Return" || $typeRequest == "Loss") {
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanReturn' WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "UPDATE Bike SET Status = 'Borrow' WHERE BikeID = '$bikeID'";
+			$this->queryRun();
+		}
+		$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$studentID'";
+		$this->queryRun();
+	}
+
+	private function queryRuined($studentID, $typeRequest, $bikeID) {
+		if ($typeRequest == "Return") {
+			$this->sqlCommand = "UPDATE StdAccount SET Status = 'CanBorrow' WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "DELETE FROM Request WHERE StdID = '$studentID'";
+			$this->queryRun();
+			$this->sqlCommand = "INSERT INTO BlackList VALUES (0, '$bikeID', '$studentID', NULL)";
+			$this->queryRun();
+			$this->sqlCommand = "UPDATE Bike SET Status = 'Repair' WHERE BikeID = '$bikeID'";
+			$this->queryRun();
+			$this->sqlCommand = "INSERT INTO Repairing VALUES (0, '$bikeID', '$studentID', NULL)";
+			$this->queryRun();
+			$this->sqlCommand = "SELECT Ordering FROM BlackList WHERE StdID = '$studentID' Order by Ordering DESC LIMIT 1";
+			$this->queryRun();
+			$order = $this->queryResult->fetch()['Ordering'];
+			$this->sqlCommand = "INSERT INTO NotPayed VALUES ('$order')";
+			$this->queryRun();
+			// add History Return
+		}
+	}
+
+	private function queryComplete($order, $bikeID) {
+		$this->sqlCommand = "UPDATE Bike SET Status = 'Ready' WHERE BikeID = '$bikeID'";
+		$this->queryRun();
+		// mai dai use $order
+	}
+
+	private function queryPaid($order) {
+		$this->sqlCommand = "DELETE FROM NotPayed WHERE Ordering = '$order'";
+		$this->queryRun();
+		$this->sqlCommand = "INSERT INTO Payed VALUES ('$order', '$this->staffID')";
+		$this->queryRun();
+	}
 
 	private function doAction() {
 		if (isset($_GET["action"])) {
@@ -360,10 +476,10 @@ class ContentCreator {
 	// editHere
 	private function setContentBlackList($search) {
 		if ($search == "Payed") {
-			$this->sqlCommand = "SELECT Payed.Order, StdID, BikeID, Cost, StaffID FROM BlackList INNER JOIN Payed ON BlackList.Order = Payed.Order";
+			$this->sqlCommand = "SELECT Payed.Ordering, StdID, BikeID, Cost, StaffID FROM BlackList INNER JOIN Payed ON BlackList.Ordering = Payed.Ordering";
 		}
 		else {
-			$this->sqlCommand = "SELECT NotPayed.Order, StdID, BikeID, Cost FROM BlackList INNER JOIN NotPayed ON BlackList.Order = NotPayed.Order";
+			$this->sqlCommand = "SELECT NotPayed.Ordering, StdID, BikeID, Cost FROM BlackList INNER JOIN NotPayed ON BlackList.Ordering = NotPayed.Ordering";
 			$this->pageAction = "NotPayed";
 		}
 		$this->pageHeader = "BlackList ($search)";
