@@ -281,7 +281,7 @@ class ContentCreator {
 	}
 
 	private function setContentHistory($search) {
-		if (!empty($search)) {
+		if ($search != "All") {
 			$this->sqlCommand = "SELECT * FROM History WHERE Operation = '$search'";
 		}
 		else {
@@ -294,18 +294,17 @@ class ContentCreator {
 
 	private function setContentRepair($search) {
 		if ($search == "Repaired") {
-			//$this->sqlCommand = "SELECT * FROM History";
-			$this->sqlCommand = "SELECT Order, Bike.BikeID, Description, Cost FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status != 'Repair'";
+			$this->sqlCommand = "SELECT * FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status != 'Repair'";
 		} 
 		else if ($search == "ToRepair") {
-			$this->sqlCommand = "SELECT Order, Bike.BikeID, Description, Cost FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status = 'Repair'";
+			$this->sqlCommand = "SELECT * FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID WHERE Status = 'Repair'";
 		}
 		else {
-			$this->sqlCommand = "SELECT * FROM Repairing";
+			$this->sqlCommand = "SELECT * FROM Repairing INNER JOIN Bike ON Repairing.BikeID = Bike.BikeID";
 			$search = "All";
 		}
-		$this->pageHeader = "History ($search)";
-		$this->panelName = "History ($search)";
+		$this->pageHeader = "Repair ($search)";
+		$this->panelName = "Repair ($search)";
 
 	}
 
@@ -317,16 +316,22 @@ class ContentCreator {
 		else {
 			$this->sqlCommand = "SELECT NotPayed.Order, StdID, BikeID, Cost FROM BlackList INNER JOIN NotPayed ON BlackList.Order = NotPayed.Order";
 		}
+		$this->pageHeader = "BlackList ($search)";
+		$this->panelName = "BlackList ($search)";
 	}
 	//edit Here
 
 	//left join ?
 	private function setContentUserStudent() {
 		$this->sqlCommand = "SELECT Student.StdID,User,Status,FirstName,LastName,MajorCode,Telephone FROM Student LEFT JOIN StdAccount ON Student.StdID = StdAccount.StdID";
+		$this->pageHeader = "Users (Student)";
+		$this->panelName = "Users (Student)";
 	}
 
 	//left join ?
 	private function setContentUserStaff() {
 		$this->sqlCommand = "SELECT Staff.StaffID,User,FirstName,LastName,Telephone FROM Staff LEFT JOIN StaffAccount ON Staff.StaffID = StaffAccount.StaffID";
+		$this->pageHeader = "Users (Staff)";
+		$this->panelName = "Users (Staff)";
 	}
 }
