@@ -92,10 +92,10 @@ class ContentCreator {
 		$this->createConnection();
 		$this->doAction();
 		$this->queryRun();
-		//$this->showContent();
-		echo $this->sqlCommand;
-		echo "<br>";
-		var_dump($this->queryResult->fetchAll());
+		$this->showContent();
+		//echo $this->sqlCommand;
+		//echo "<br>";
+		//var_dump($this->queryResult->fetchAll());
 	}
 
 	private function userLoggedIn() {
@@ -258,12 +258,11 @@ class ContentCreator {
 	}
 
 	private function setContentBike($search) {
-		if (!empty($search)) {
+		if ($search != 'All') {
 			$this->sqlCommand = "SELECT * FROM Bike WHERE Status = '$search'";
 		}
 		else {
 			$this->sqlCommand = "SELECT * FROM Bike";
-			$search = "All";
 		}
 		$this->pageHeader = "Bike ($search)";
 		$this->panelName = "Bike ($search)";
